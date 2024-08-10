@@ -1,12 +1,11 @@
 package com.domain
 
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 class LoadFavoritePicturesUseCase @Inject constructor(
     private val repository: PicturesRepository
 ) {
-    fun execute(): Flow<List<Picture>> {
-        return repository.getFavoritePictures()
-    }
+   suspend fun execute(): Flow<List<Picture>> = repository.getFavoritePictures()
 }
+

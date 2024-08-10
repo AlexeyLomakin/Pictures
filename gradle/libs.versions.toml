@@ -1,23 +1,24 @@
 [versions]
 agp = "8.5.2"
-converterGson = "2.9.0"
+converterGson = "2.11.0"
+coreTesting = "2.2.0"
 fragmentKtx = "1.8.2"
 glide = "4.16.0"
 hiltAndroid = "2.52"
-kotlin = "1.9.24"
+kotlin = "2.0.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
-kotlinxCoroutinesAndroid = "1.7.3"
+kotlinxCoroutinesAndroid = "1.8.1"
 material = "1.12.0"
 activity = "1.9.1"
 constraintlayout = "2.1.4"
 jetbrainsKotlinJvm = "2.0.0"
 kspVersion = "2.0.0-1.0.24"
 recyclerview = "1.3.2"
-retrofit = "2.9.0"
+retrofit = "2.11.0"
 viewbindingpropertydelegateNoreflectionVersion = "1.5.9"
 navigationFragment = "2.7.7"
 navigationFragmentKtx = "2.7.7"
@@ -25,6 +26,7 @@ javaxInject = "1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
@@ -36,7 +38,8 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 kirich1409-viewbindingpropertydelegate-noreflection = { module = "com.github.kirich1409:viewbindingpropertydelegate-noreflection", version.ref = "viewbindingpropertydelegateNoreflectionVersion" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesAndroid" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version = "1.8.1" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version = "1.8.1" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
@@ -45,6 +48,7 @@ retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson", v
 androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationFragmentKtx" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInject" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version = "5.10.3" }
 
 
 [plugins]

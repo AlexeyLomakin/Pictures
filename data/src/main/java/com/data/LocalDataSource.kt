@@ -1,28 +1,18 @@
 package com.data
 
-import com.domain.Picture
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import android.content.Context
+import java.io.File
+import javax.inject.Inject
 
-interface LocalDataSource {
-    fun getFavoritePictures(): Flow<List<Picture>>
-    suspend fun savePicture(picture: Picture)
-    suspend fun deletePicture(picture: Picture)
-}
+class LocalDataSource @Inject constructor(private val context: Context) {
 
-class LocalDataSourceImpl: LocalDataSource {
-
-    private val favoritePictures = mutableSetOf<Picture>()
-
-    override fun getFavoritePictures(): Flow<List<Picture>> = flow {
-        emit(favoritePictures.toList())
+    fun getOrCreateLocalDirectory(): File {
+        val directory = File(context.getExternalFilesDir(null), "saved_images")
+        return directory
     }
 
-    override suspend fun savePicture(picture: Picture) {
-        favoritePictures.add(picture)
-    }
-
-    override suspend fun deletePicture(picture: Picture) {
-        favoritePictures.remove(picture)
+    fun getLocalDirectoryPath(): String? {
+        val directory = getOrCreateLocalDirectory()
+        return directory.absolutePath
     }
 }

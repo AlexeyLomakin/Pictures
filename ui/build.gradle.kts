@@ -68,4 +68,12 @@ dependencies {
 
     // Glide
     implementation(libs.glide)
+
+    //Android Material
+    implementation (libs.material)
+
+    //Tests dependencies
+    testImplementation (libs.junit)
+    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation (libs.androidx.core.testing)
 }

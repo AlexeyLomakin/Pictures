@@ -1,41 +1,43 @@
-package com.example.ui
+package com.ui
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.red
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.domain.Picture
-import com.ui.R
 import com.ui.databinding.PictureElementBinding
+import java.io.File
 
-class PicturesAdapter : ListAdapter<Picture, PicturesAdapter.PictureViewHolder>(DiffCallback()) {
+class LikedPicturesAdapter : ListAdapter<Picture, LikedPicturesAdapter.PictureViewHolder>(DiffCallback()) {
 
-    private var onLikeClickListener: ((Picture) -> Unit)? = null
-    private var isFavoriteScreen: Boolean = false
+    private var onUnlikeClickListener: ((Picture) -> Unit)? = null
 
     inner class PictureViewHolder(private val binding: PictureElementBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(picture: Picture) {
-            Glide.with(binding.pictureImageView.context)
-                .load(picture.download_url)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(binding.pictureImageView)
-
-            binding.likeButton.visibility = View.VISIBLE
-            binding.likeButton.setImageResource(
-                if (isFavoriteScreen) R.drawable.like else R.drawable.like.apply {
-                    ContextCompat.getColor(binding.likeButton.context, R.color.colorError)
+            val localDirectoryPath = getLocalDirectoryPath()
+            if (localDirectoryPath != null) {
+                val file = File(localDirectoryPath, "${picture.id}.png")
+                if (file.exists()) {
+                    Glide.with(binding.pictureImageView.context)
+                        .load(file)
+                        .into(binding.pictureImageView)
                 }
-            )
+            }
 
             binding.likeButton.setOnClickListener {
-                onLikeClickListener?.invoke(picture)
+                onUnlikeClickListener?.invoke(picture)
+            }
+        }
+
+        private fun getLocalDirectoryPath(): String? {
+            val directory = File(binding.pictureImageView.context.getExternalFilesDir(null), "saved_images")
+            return if (directory.exists() || directory.mkdirs()) {
+                directory.absolutePath
+            } else {
+                null
             }
         }
     }
@@ -50,14 +52,16 @@ class PicturesAdapter : ListAdapter<Picture, PicturesAdapter.PictureViewHolder>(
         holder.bind(getItem(position))
     }
 
+
+    fun setOnUnlikeClickListener(listener: (Picture) -> Unit) {
+        onUnlikeClickListener = listener
+    }
+
     private class DiffCallback : DiffUtil.ItemCallback<Picture>() {
         override fun areItemsTheSame(oldItem: Picture, newItem: Picture): Boolean =
             oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: Picture, newItem: Picture): Boolean =
             oldItem == newItem
-    }
-    fun setOnLikeClickListener(listener: (Picture) -> Unit) {
-        onLikeClickListener = listener
     }
 }

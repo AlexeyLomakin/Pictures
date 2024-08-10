@@ -1,27 +1,61 @@
 package com.data
 
-import com.domain.PicturesRepository
 import com.domain.Picture
+import com.domain.PicturesRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
+import java.io.File
+import javax.inject.Inject
 
-class PicturesRepositoryImpl(
+class PicturesRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
-): PicturesRepository {
+) : PicturesRepository {
 
-    override fun fetchRandomPictures(page: Int, limit: Int): Flow<List<Picture>> = flow {
-        val pictures = remoteDataSource.fetchRandomPictures(page, limit)
-        emit(pictures)
+    private val favoritePictures = mutableListOf<Picture>()
+
+
+
+    override suspend fun fetchRandomPictures(page: Int, limit: Int): Flow<Result<List<Picture>>> =
+        remoteDataSource.fetchRandomPictures(page, limit)
+
+    override suspend fun getFavoritePictures(): Flow<List<Picture>> = flow {
+        val directoryPath = localDataSource.getLocalDirectoryPath()
+        val favoritePictures = mutableListOf<Picture>()
+
+        directoryPath?.let { path ->
+            val directory = File(path)
+            val files = directory.listFiles { file -> file.extension == "png" }
+            files?.forEach { file ->
+                val pictureId = file.nameWithoutExtension.toLongOrNull()
+                if (pictureId != null) {
+                    favoritePictures.add(Picture(id = pictureId.toString(),"", localPath = file.absolutePath))
+                }
+            }
+        }
+
+        emit(favoritePictures)
     }
 
-    override fun getFavoritePictures(): Flow<List<Picture>> = localDataSource.getFavoritePictures()
-
     override suspend fun likePicture(picture: Picture) {
-        localDataSource.savePicture(picture)
+        favoritePictures.add(picture)
     }
 
     override suspend fun unlikePicture(picture: Picture) {
-        localDataSource.deletePicture(picture)
+        deleteImage(picture.id)
+        favoritePictures.remove(picture)
+    }
+
+    private suspend fun deleteImage(imageName: String) = withContext(Dispatchers.IO) {
+        val directory = localDataSource.getOrCreateLocalDirectory()
+        val file = File(directory, "$imageName.png")
+        if (file.exists()) {
+            file.delete()
+        }
+    }
+    override fun getLocalDirectoryPath(): String? {
+        return localDataSource.getLocalDirectoryPath()
     }
 }
