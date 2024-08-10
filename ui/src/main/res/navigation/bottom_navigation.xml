@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_navigation"
+    app:startDestination="@id/random_photo">
+
+    <fragment
+        android:id="@+id/random_photo"
+        android:name="com.ui.RandomPicturesFragment"
+        android:label="Random"
+        tools:layout="@layout/random_pictures_fragment" />
+
+    <fragment
+        android:id="@+id/liked_photo"
+        android:name="com.ui.LikedPicturesFragment"
+        android:label="Random"
+        tools:layout="@layout/liked_pictures_fragment" />
+
+</navigation>
