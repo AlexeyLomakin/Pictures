@@ -7,8 +7,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="?attr/colorSurface">
 
+    <!-- Fragment Container -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -19,16 +21,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:defaultNavHost="true"/>
+        app:defaultNavHost="true"
+        android:background="?attr/colorSurface"
+        android:elevation="4dp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         app:labelVisibilityMode="labeled"
+        app:itemIconTint="@color/nav_item_color_state"
+        app:itemTextColor="@color/nav_item_color_state"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_nav_menu"/>
+        android:background="?attr/colorSurface"
+        android:elevation="8dp"
+        app:itemRippleColor="?attr/colorPrimary"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconSize="24dp"
+        app:itemTextAppearanceActive="@style/BottomNavTextStyleActive"
+        app:itemTextAppearanceInactive="@style/BottomNavTextStyleInactive"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

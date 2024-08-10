@@ -68,4 +68,7 @@ dependencies {
 
     // Glide
     implementation(libs.glide)
+
+    //Android Material
+    implementation (libs.material)
 }

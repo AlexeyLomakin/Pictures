@@ -24,19 +24,17 @@ class LikedPicturesViewModel @Inject constructor(
         loadFavoritePictures()
     }
 
-
-    private fun loadFavoritePictures() {
+    fun loadFavoritePictures() {
         viewModelScope.launch {
-            loadFavoritePicturesUseCase.execute()
-                .collect { pictures ->
-                    _favoritePicturesState.value = pictures
-                }
+            loadFavoritePicturesUseCase.execute().collect { pictures ->
+                _favoritePicturesState.value = pictures
+            }
         }
     }
 
     fun unlikePicture(picture: Picture) {
         viewModelScope.launch {
-            unlikePictureUseCase.execute(picture)
+            unlikePictureUseCase.invoke(picture)
             loadFavoritePictures()
         }
     }

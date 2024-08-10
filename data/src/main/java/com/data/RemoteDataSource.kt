@@ -1,19 +1,22 @@
 package com.data
 
 import com.domain.Picture
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class RemoteDataSource(private val picturesService: PicturesService) {
+class RemoteDataSource @Inject constructor(
+    private val picturesService: PicturesService
+) {
 
-    suspend fun fetchRandomPictures(page: Int, limit: Int): List<Picture> = withContext(Dispatchers.IO) {
-        val response = picturesService.getPictures(page, limit)
-        response.map { picture ->
+    fun fetchRandomPictures(page: Int, limit: Int): Flow<List<Picture>> = flow {
+        val pictures = picturesService.getPictures(page, limit)
+        emit(pictures.map { picture ->
             Picture(
                 id = picture.id,
-                url = picture.url,
                 download_url = picture.download_url
             )
-        }
+        })
     }
 }
+

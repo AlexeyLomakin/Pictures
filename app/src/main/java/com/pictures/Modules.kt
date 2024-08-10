@@ -1,7 +1,7 @@
 package com.pictures
 
+import android.content.Context
 import com.data.LocalDataSource
-import com.data.LocalDataSourceImpl
 import com.data.PicturesRepositoryImpl
 import com.data.PicturesService
 import com.data.RemoteDataSource
@@ -9,6 +9,7 @@ import com.domain.PicturesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -40,8 +41,10 @@ object Modules {
 
     @Provides
     @Singleton
-    fun provideLocalDataSource(): LocalDataSource {
-        return LocalDataSourceImpl()
+    fun provideLocalDataSource(
+        @ApplicationContext context: Context
+    ): LocalDataSource {
+        return LocalDataSource(context)
     }
 
     @Provides
