@@ -53,4 +53,9 @@ dependencies {
 
     // Glide
     implementation(libs.glide)
+
+    //Tests dependencies
+    testImplementation (libs.junit)
+    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation (libs.androidx.core.testing)
 }

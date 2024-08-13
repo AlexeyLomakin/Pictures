@@ -9,6 +9,3 @@ class LikePictureUseCase @Inject constructor(
         repository.likePicture(picture)
     }
 }
-
-
-

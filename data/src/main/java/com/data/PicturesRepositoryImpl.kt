@@ -16,7 +16,9 @@ class PicturesRepositoryImpl @Inject constructor(
 
     private val favoritePictures = mutableListOf<Picture>()
 
-    override suspend fun fetchRandomPictures(page: Int, limit: Int): Flow<List<Picture>> =
+
+
+    override suspend fun fetchRandomPictures(page: Int, limit: Int): Flow<Result<List<Picture>>> =
         remoteDataSource.fetchRandomPictures(page, limit)
 
     override suspend fun getFavoritePictures(): Flow<List<Picture>> = flow {

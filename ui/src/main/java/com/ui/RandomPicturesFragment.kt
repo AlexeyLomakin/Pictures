@@ -3,6 +3,7 @@ package com.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -49,6 +50,14 @@ class RandomPicturesFragment : Fragment(R.layout.random_pictures_fragment) {
 
         adapter.setOnLikeClickListener { picture ->
             viewModel.likePicture(picture)
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.error.collect { errorMessage ->
+                errorMessage?.let {
+                    Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                    viewModel.clearError()
+                }
+            }
         }
     }
 

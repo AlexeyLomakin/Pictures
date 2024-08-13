@@ -1,7 +1,6 @@
 package com.ui
 
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.domain.FetchRandomPicturesUseCase
@@ -31,6 +30,9 @@ class RandomPicturesViewModel @Inject constructor(
     private val _localDirectoryPath = MutableStateFlow<String?>(null)
     val localDirectoryPath: StateFlow<String?> = _localDirectoryPath
 
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error
+
     private var currentPage = 1
     private val limit = 20
 
@@ -44,12 +46,17 @@ class RandomPicturesViewModel @Inject constructor(
 
         _isLoading.value = true
         viewModelScope.launch {
-            fetchRandomPicturesUseCase.execute(currentPage, limit).collect { newPictures ->
-                _pictures.update { currentPictures ->
-                    currentPictures + newPictures
+            fetchRandomPicturesUseCase.execute(currentPage, limit).collect { result ->
+                result.onSuccess { newPictures ->
+                    _pictures.update { currentPictures ->
+                        currentPictures + newPictures
+                    }
+                    _isLoading.value = false
+                    currentPage++
+                }.onFailure { exception ->
+                    _error.value = exception.message
+                    _isLoading.value = false
                 }
-                _isLoading.value = false
-                currentPage++
             }
         }
     }
@@ -59,10 +66,13 @@ class RandomPicturesViewModel @Inject constructor(
             val localPath = _localDirectoryPath.value
             if (localPath != null) {
                 likePictureUseCase.invoke(picture.copy(localPath = localPath))
-            } else {
-                Log.e("RandomPicturesViewModel", "Local directory path is null")
             }
         }
     }
+
+    fun clearError() {
+        _error.value = null
+    }
 }
+
 
